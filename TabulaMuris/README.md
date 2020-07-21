@@ -48,14 +48,14 @@ In our paper, Figure 8 shows the results of 20 different combinations of K (5,
 
 ## 4. TSNE results for different parameters of SIMPLEs. 
 * We use the function `handle_raw_data` in the script `analyze_imputation.R` to
-get the Figure 8(b), Figure S11 and Figure S12.
+get the Figure 8(b), Figure S12.
 
 * Then we use the function `handle_simple_tsne` and `handle_simple_draw_tsne`
   in the same script to get Figure 8(a).
 
 ## 5. Boxplot and dotplot for gene module analysis given M as 1 and K as 10.
 * We use function `draw_simple_boxplot` in the script `analyze_imputation.R` to
-  get the Figure 9(a) and Figure S13.
+  get the Figure 9(a) and Figure S14.
 
 * Start from Line 387 till the end in the same script, we draw the dotplot for
   Figure 9(b). 
