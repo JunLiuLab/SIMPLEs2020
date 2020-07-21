@@ -42,6 +42,7 @@ depth_mean_nonumi <- 1e+05
 depth_sd_nonumi <- 10000
 
 alpha_mean_nonumi <- 0.4
+
 ## ** utils
 my_sim_true <- function(seed = 0) {
   SimulateTrueCounts(
@@ -100,21 +101,14 @@ mysymsim <- function(seed) {
     add_batch_effect = add_batch_effect,
     nbatch = nbatch, batch_effect_size = batch_effect_size
   )
-  save(true_counts, obs_umi, obs_nonumi, file = stringr::str_c("symsim_data/sim",
+  save(true_counts, obs_umi, obs_nonumi,
+       file = stringr::str_c("symsim_data/sim",
     ncell, ngene, seed, ".RData",
     sep = "_"
   ))
 }
 
-main <- function(myrep=10) {
-  for (i in 1:myrep) {
-    mysymsim(i)
-  }
-  ## *** obs data view tsne_true <- symsim_ptsne('TrueCounts',
-  ## list(true_counts[[1]], true_counts[[3]]), label = 'pop')
-  ## tsne_obs_umi <- symsim_ptsne('UMI', obs_umi, label =
-  ## 'cell_meta.pop') tsne_obs_nonumi <- symsim_ptsne('nonUMI',
-  ## obs_nonumi, label = 'cell_meta.pop')
+## * generate 20 SymSim datasets.
+for (i in 1:20) {
+  mysymsim(i)
 }
-
-main(myrep=20)

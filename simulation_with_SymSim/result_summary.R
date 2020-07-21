@@ -8,7 +8,8 @@ p <- list(
 )
 
 load_model_result <- function(modelnm, k = 2, m = 1,
-                              dirnm = here::here("simutool","jobs","result"), ...) {
+                              dirnm = here::here("simutool", "jobs", "result"),
+                              outmodelnm = toupper(modelnm), ...) {
   if (modelnm != "simple") {
     modelnm <- modelnm
     fnm <- paste0(dirnm, "/", str_c(modelnm, 2, 1, ".rds", sep = "_"))
@@ -34,35 +35,70 @@ load_model_result <- function(modelnm, k = 2, m = 1,
       explm = rep(explm, npc), aspect = rep("clari", npc)
     )
   }
+
   get_ari_sums_array <- function(aris, explm, col = npc) {
     data.frame(
       mean = mean(aris[, col]), std = sd(aris[, col]) / sqrt(p$nrep),
       explm = explm, aspect = "clari"
     )
   }
+
   de_auc_umi <- get_auc_sums(r$de_auc_umi, "umi")
   de_auc_nonumi <- get_auc_sums(r$de_auc_nonumi, "nonumi")
   clust_ari_umi <- get_ari_sums_array(r$clust_ari_umi, explm = "umi", col = npc)
-  clust_ari_nonumi <- get_ari_sums_array(r$clust_ari_nonumi, explm = "nonumi", col = npc)
+  clust_ari_nonumi <- get_ari_sums_array(r$clust_ari_nonumi,
+    explm = "nonumi", col = npc
+  )
 
   mysum <- rbind.data.frame(de_auc_umi, de_auc_nonumi,
     clust_ari_umi, clust_ari_nonumi,
     make.row.names = FALSE, stringsAsFactors = FALSE
   )
-  mysum[["model"]] <- c(modelnm)
+  mysum[["model"]] <- c(outmodelnm)
   mysum[["pcs"]] <- c(0, 0, p$pcs[npc], p$pcs[npc])
   return(mysum)
 }
 
 
+draw_bar_plot <- function(e = "nonumi", a = "deauc",
+                          data = all_res, lpos = "none",
+                          mytitle = "AUC", myangle = 0) {
+  p <- data %>%
+    filter(explm == e, aspect == a) %>%
+    ggplot(data = ., aes(x = model, y = mean, fill = model)) +
+    geom_bar(stat = "identity", position = position_dodge()) +
+    geom_errorbar(aes(ymin = mean - std, ymax = mean + std),
+      width = .2, position = position_dodge(.9)
+    ) +
+    theme(
+      axis.text.x = element_text(
+        angle = myangle, color = "black",
+        size = 25, family = "Helvetica"
+      ),
+      axis.text.y = element_text(color = "black",
+                                 family = "Helvetica", size = 13),
+      axis.title.x = element_blank(),
+      axis.title.y = element_text(color = "black",
+                                  family = "Helvetica", size = 25),
+      title = element_text(
+        family = "Helvetica", color = "black", size = 24,
+        face = "bold"
+      ),
+      plot.title = element_text(hjust = 0.5),
+      legend.position = lpos
+    ) +
+    ylab(mytitle)
+  return(p)
+}
+
 ## * load_all result
-control_res <- load_model_result("control")
-rmagic_res <- load_model_result("rmagic")
-saver_res <- load_model_result("saver")
-scimpute_res <- load_model_result("scimpute")
-scrabble_res <- load_model_result("scrabble")
-viper_res <- load_model_result("viper")
-scvi_res <- load_model_result("scvi")
+control_res <- load_model_result("control", outmodelnm = "Control")
+rmagic_res <- load_model_result("rmagic", outmodelnm = "MAGIC")
+saver_res <- load_model_result("saver", outmodelnm = "SAVER")
+scimpute_res <- load_model_result("scimpute", outmodelnm = "scImpute")
+scrabble_res <- load_model_result("scrabble", outmodelnm = "SCRABBLE")
+viper_res <- load_model_result("viper", outmodelnm = "VIPER")
+scvi_res <- load_model_result("scvi", outmodelnm = "scVI")
 
 simple21_res <- load_model_result("simple", 2, 1)
 simple41_res <- load_model_result("simple", 4, 1)
@@ -101,8 +137,6 @@ simple_res <- rbind(
   simple105_res
 )
 
-simple101_res[["model"]] <- "simple"
-
 all_res <- rbind(
   control_res,
   rmagic_res,
@@ -111,70 +145,65 @@ all_res <- rbind(
   scrabble_res,
   viper_res,
   scvi_res,
-  simple101_res
+  simple101_res,
+  simple41_res,
+  simple25_res
 )
 
 ## * Figure
-draw_bar_plot <- function(e = "nonumi", a = "deauc",
-                          data = all_res, lpos = "none",
-                          mytitle = "AUC") {
-  p <- data %>%
-    filter(explm == e, aspect == a) %>%
-    ggplot(data = ., aes(x = model, y = mean, fill = model)) +
-    geom_bar(stat = "identity", position = position_dodge()) +
-    geom_errorbar(aes(ymin = mean - std, ymax = mean + std),
-      width = .2, position = position_dodge(.9)
-    ) +
-    theme(
-      axis.text.x = element_text(color = "black", size = 20, family = "Helvetica", face = "bold"),
-      axis.text.y = element_text(color = "black", family = "Helvetica", size = 13),
-      axis.title.x = element_blank(),
-      axis.title.y = element_text(color = "black", family = "Helvetica", size = 20),
-      title = element_text(
-        family = "Helvetica", color = "black", size = 24,
-        face = "bold"
-      ),
-      plot.title = element_text(hjust = 0.5),
-      legend.position = lpos
-    ) +
-    ylab(mytitle)
-  return(p)
-}
+deauc_nonumi_p <- draw_bar_plot("nonumi", "deauc", myangle = 90)
+ggsave("deauc_nonumi_all.pdf",
+  device = "pdf",
+  plot = deauc_nonumi_p, width = 11, height = 11
+  )
 
-deauc_nonumi_p <- draw_bar_plot("nonumi", "deauc") +
-  ggtitle("AUC of differential gene analysis on \n the simulation of a SmartSeq2 platform")
-ggsave("deauc_nonumi_all.pdf", device = "pdf", plot = deauc_nonumi_p, width = 11, height = 11)
-deauc_umi_p <- draw_bar_plot("umi", "deauc") +
-  ggtitle("AUC of differential gene analysis on \n the simulation of a 10x Chromium platform")
-ggsave("deauc_umi_all.pdf", device = "pdf", plot = deauc_umi_p, width=11, height=11)
+deauc_umi_p <- draw_bar_plot("umi", "deauc", myangle = 90)
+ggsave("deauc_umi_all.pdf",
+  device = "pdf",
+  plot = deauc_umi_p, width = 11, height = 11
+  )
 
-ari_nonumi_p <- draw_bar_plot("nonumi", "clari", mytitle = "aRI") +
-  ggtitle("aRI of clustering analysis on \n the simulation of a SmartSeq2 platform")
-ggsave("ari_nonumi_all.pdf", device = "pdf", plot = ari_nonumi_p, width=11, height=11)
+ari_nonumi_p <- draw_bar_plot("nonumi", "clari",
+  mytitle = "aRI", myangle = 90
+)
+ggsave("ari_nonumi_all.pdf",
+  device = "pdf",
+  plot = ari_nonumi_p, width = 11, height = 11
+  )
 
-ari_umi_p <- draw_bar_plot("umi", "clari", mytitle = "aRI") +
-  ggtitle("aRI of clustering analysis on \n the simulation of a 10x Chromium platform")
-ggsave("ari_umi_all.pdf", device = "pdf", plot = ari_umi_p, width=11, height=11)
+ari_umi_p <- draw_bar_plot("umi", "clari",
+  mytitle = "aRI", myangle = 90
+)
+ggsave("ari_umi_all.pdf",
+  device = "pdf",
+  plot = ari_umi_p, width = 11, height = 11
+)
 
+deauc_nonumi_p <- draw_bar_plot("nonumi", "deauc",
+  data = simple_res, "none", myangle = 90
+)
+ggsave("deauc_nonumi_simples.pdf",
+  device = "pdf", plot = deauc_nonumi_p, width = 11, height = 11
+)
 
-simple101_res[["model"]] <- "simple_10_1"
-deauc_nonumi_p <- draw_bar_plot("nonumi", "deauc", data = simple_res, "right") +
-  ggtitle("AUC of differential gene analysis on \n the simulation of a SmartSeq2 platform") +
-  theme(axis.text.x = element_blank())
-ggsave("deauc_nonumi_simples.pdf", device = "pdf", plot = deauc_nonumi_p, width=11, height=11)
+deauc_umi_p <- draw_bar_plot("umi", "deauc",
+  data = simple_res, "none", myangle = 90
+)
+ggsave("deauc_umi_simples.pdf",
+  device = "pdf", plot = deauc_umi_p, width = 11, height = 11
+)
 
-deauc_umi_p <- draw_bar_plot("umi", "deauc", data = simple_res, "right") +
-  ggtitle("AUC of differential gene analysis on \n the simulation of a 10x Chromium platform") +
-  theme(axis.text.x = element_blank())
-ggsave("deauc_umi_simples.pdf", device = "pdf", plot = deauc_umi_p, width=11, height = 11)
-
-ari_nonumi_p <- draw_bar_plot("nonumi", "clari", data = simple_res, lpos = "right", mytitle = "aRI") +
-  ggtitle("aRI of clustering analysis on \n the simulation of a SmartSeq2 platform") +
-  theme(axis.text.x = element_blank())
-ggsave("ari_nonumi_simples.pdf", device = "pdf", plot = ari_nonumi_p, width=11, height=11)
+ari_nonumi_p <- draw_bar_plot("nonumi", "clari",
+  data = simple_res, lpos = "none", mytitle = "aRI", myangle = 90
+)
+ggsave("ari_nonumi_simples.pdf",
+  device = "pdf", plot = ari_nonumi_p, width = 11, height = 11
+)
 
 
-ari_umi_p <- draw_bar_plot("umi", "clari", data = simple_res, lpos = "right", mytitle = "aRI") +
-  ggtitle("aRI of clustering analysis on \n the simulation of a 10x Chromium platform") +
-  theme(axis.text.x = element_blank())
-ggsave("ari_umi_simples.pdf", device = "pdf", plot = ari_umi_p, width=11, height = 11)
+ari_umi_p <- draw_bar_plot("umi", "clari",
+  data = simple_res, lpos = "none", mytitle = "aRI", myangle = 90
+)
+ggsave("ari_umi_simples.pdf",
+  device = "pdf", plot = ari_umi_p, width = 11, height = 11
+)

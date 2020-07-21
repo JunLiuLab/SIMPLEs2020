@@ -1,6 +1,6 @@
 * Simulation with SymSim
 ** Required  packages
-- prepare_packages.R is used to install the packages needed, which could be used
+- *prepare_packages.R* is used to install the packages needed, which could be used
   as a reference. 
 
 ** How to Run
@@ -15,7 +15,8 @@
   scVI, and how to run scVI. Again, we use *make* under the $jobs$ sub-directory
   under *scVI*.
 *** Run SIMPLEs and other methods.
-- eval_simulation_singlejob.R describe how to run different imputation methods.
+- *eval_simulation_singlejob.R* describe how to run different imputation methods.
 
 ** Result Summary
-- result_summary.R is used to generate Supplementary Text: Figure S15-16.
+- *result_summary.R* is used to generate Supplementary Text: Figure S16 and S17.
+- *tsne_SymSim.R* is used to generate Supplementary Text: Figure S15 (a)
