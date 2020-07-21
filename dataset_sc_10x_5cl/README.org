@@ -3,11 +3,11 @@
 ** Data preparation
 - *bulk_RNAseq* directory contains the bulkRNAseq data (GSE86337) directly from
   the NCBI GEO website.
-- get_DEgenes_from_bulkRNAseq.R is used to generate the differential expressed
+- *get_DEgenes_from_bulkRNAseq.R* is used to generate the differential expressed
   genes from the bulkRNAseq data based on the tool DESeq2.
-- prepare_scRNAseq.R is used to generate the scRNAseq based on the GitHub repository:
+- *prepare_scRNAseq.R* is used to generate the scRNAseq based on the GitHub repository:
   sc_mixology. In the code, we describe how to get the data we use. Part of the
-  codes are learned from the Gihub repository: imputationBenchmark.
+  codes are learned from the Gihub repository named _imputationBenchmark_.
 
 ** How to run
 - Our jobs are organized and executed by *make* under the *jobs* directory.
@@ -17,4 +17,5 @@
   expressed gene analysis.
 
 ** Data Summary
-- result_summary.R is used to generate Supplementary Text: Figure S17-18.
+- *tsne_10x.R* is used to generate Supplementary Text: Figure S18 (a)
+- *result_summary.R* is used to generate Supplementary Text: Figure S18 (c), (d), (e)
