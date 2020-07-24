@@ -1,9 +1,9 @@
 # SIMPLEs2020: Reproducible codes for [SIMPLEs](https://github.com/JunLiuLab/SIMPLEs) experiments
 
 ## Data sets used in the [manuscript](https://www.biorxiv.org/content/10.1101/2020.01.13.904649v1?rss=1)
-
 * Can be downloaded from the Zenodo: https://doi.org/10.5281/zenodo.395837
 
+## Explanations about the mESC data and hECS data in Zenodo.
 * mESC (Deng's) data
   * I used this dataset to show that: 
     *  1) SIMPLEs can discover subtypes of cells. TSNE plot of imputed data
@@ -42,3 +42,6 @@
     * Rscripts: [SCRABBLE_VIPER_SAVER](hESC_chu_dataset/chu2_SCRABBLE_VIPER_SAVER.R), [MAGIC_SCIMPUTE](hESC_chu_dataset/chu2_clean.R), [SIMPLES](hESC_chu_dataset/chu_ts_new.R)
     * Results: [Others_result/](Others_result)Chu_ts_*_.RData, scimpute_ts*, [SIMPLE-B](SIMPLES_result/chu_ts_bulk_0228-099.rdat)
 
+## Reference
+SIMPLEs: a single-cell RNA sequencing imputation strategy preserving gene modules and cell clusters variation \\
+Zhirui Hu, Songpeng Zu, Jun S. Liu, bioRiv 2020
