@@ -4,6 +4,7 @@
 * Can be downloaded from the Zenodo: https://doi.org/10.5281/zenodo.3958371
 
 ## Explanations about the mESC data and hECS data in Zenodo.
+NOTE: Links below to GitHub might be broken. Please see the corresponding codes and data in the Zenodo.
 * mESC (Deng's) data
   * I used this dataset to show that: 
     *  1) SIMPLEs can discover subtypes of cells. TSNE plot of imputed data
