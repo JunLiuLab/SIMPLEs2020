@@ -17,6 +17,6 @@
 
 ** Result Summary
 - *simple_timer_summary.R* 
-  - generate the left two figures in Supplementary Text: Figure S19
+  - generate the left two figures in Supplementary Text: Figure S21.
 - *timer_compare_summary.R*
-  - generate the right figure in Supplementary Text: Figure S19 
+  - generate the right figure in Supplementary Text: Figure S21. 

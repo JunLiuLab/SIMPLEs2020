@@ -17,5 +17,5 @@
   expressed gene analysis.
 
 ** Data Summary
-- *tsne_10x.R* is used to generate Supplementary Text: Figure S18 (a)
-- *result_summary.R* is used to generate Supplementary Text: Figure S18 (c), (d), (e)
+- *tsne_10x.R* is used to generate Supplementary Text: Figure S20(a)
+- *result_summary.R* is used to generate Supplementary Text: Figure S20(c), (d), (e)
