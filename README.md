@@ -43,5 +43,5 @@
     * Results: [Others_result/](Others_result)Chu_ts_*_.RData, scimpute_ts*, [SIMPLE-B](SIMPLES_result/chu_ts_bulk_0228-099.rdat)
 
 ## Reference
-SIMPLEs: a single-cell RNA sequencing imputation strategy preserving gene modules and cell clusters variation \\
+SIMPLEs: a single-cell RNA sequencing imputation strategy preserving gene modules and cell clusters variation
 Zhirui Hu, Songpeng Zu, Jun S. Liu, bioRiv 2020
