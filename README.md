@@ -1,7 +1,7 @@
 # SIMPLEs2020: Reproducible codes for [SIMPLEs](https://github.com/JunLiuLab/SIMPLEs) experiments
 
 ## Data sets used in the [manuscript](https://www.biorxiv.org/content/10.1101/2020.01.13.904649v1?rss=1)
-* Can be downloaded from the Zenodo: https://doi.org/10.5281/zenodo.395837
+* Can be downloaded from the Zenodo: https://doi.org/10.5281/zenodo.3958371
 
 ## Explanations about the mESC data and hECS data in Zenodo.
 * mESC (Deng's) data
